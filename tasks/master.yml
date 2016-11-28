@@ -1,30 +1,85 @@
-- name: create directory path to store the persistent information 
-  file:
-    path: "{{ mesos_master_work_dir }}"
-    state: directory
-    mode: 0755
-  tags:
-    - mesos-master
+---
+    - name: Obtain master IP in Deb systems
+      shell: ifconfig eth0 | sed -n '/inet addr/s/.*addr.\([^ ]*\) .*/\1/p'
+      #shell:  wget -qO- ifconfig.me/ip
+      register: master_ip_deb
+      when: ansible_os_family == "Debian"
 
-- name: run mesos-master container
-  docker:
-    name: mesos-master
-    image: "{{ mesos_master_image }}"
-    detach: true
-    state: reloaded
-    net: "host"
-    volumes:
-    - "{{ mesos_master_work_dir }}:{{ mesos_master_work_dir }}"
-    - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"
-    env:
-      MESOS_HOSTNAME: "{{ mesos_hostname }}"
-      MESOS_IP: "{{ mesos_ip }}"
-      MESOS_CLUSTER: "{{ mesos_cluster_name }}"
-      MESOS_ZK: "zk://{{ zookeeper_peers_nodes }}/mesos"
-      MESOS_LOG_DIR: "{{ mesos_log_dir }}"
-      MESOS_QUORUM: "{{ mesos_quorum }}"
-      MESOS_WORK_DIR: "{{ mesos_master_work_dir }}"
-      MESOS_OFFER_TIMEOUT: "{{ mesos_master_offer_timeout }}"
-    restart_policy: always
-  tags:
-    - mesos-master
+    - name: Obtain master IP in RedHat systems
+      shell: ifconfig ens3 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'
+      register: master_ip_rht
+      when: ansible_os_family == "RedHat"
+
+    - name: Obtain master nodename
+      shell: hostname | cut -d "." -f 1
+      register: master_hostname
+
+    - name: Set ZooKeeper URL (debian)# used for leader election amongst masters
+      copy:
+        #content: "zk://{{IM_NODE_PUBLIC_IP}}:2181/mesos"
+        content: "zk://{{master_ip_deb.stdout}}:2181/mesos"
+        dest: /etc/mesos/zk
+        mode: 0644
+      when: ansible_os_family == "Debian"
+
+    - name: Set ZooKeeper URL (redhat)# used for leader election amongst masters
+      copy:
+        content: "zk://{{master_ip_rht.stdout}}:2181/mesos"
+        dest: /etc/mesos/zk
+        mode: 0644
+      when: ansible_os_family == "RedHat"
+
+    - name: start up zookeeper
+      service: name=zookeeper state=started enabled=yes
+
+    # Master tasks
+    # Disable mesos-slave in Debian
+    - name: Stop the Mesos Slave service
+      service: name=mesos-slave state=stopped
+      when: ansible_os_family == "Debian"
+
+    - name: Disable the Mesos Slave service
+      copy:
+        content: "manual"
+        dest: /etc/init/mesos-slave.override
+        mode: 0644
+      when: ansible_os_family == "Debian"
+
+    # Disable mesos-slave in Redhat
+    - name: Stop the Mesos Slave service
+      command: systemctl stop mesos-slave.service
+      when: ansible_os_family == "RedHat"
+
+    - name: Disable the Mesos Slave service
+      command: systemctl disable mesos-slave.service
+      when: ansible_os_family == "RedHat"
+ 
+    - name: Set Mesos Master hostname
+      copy:
+        content: "{{master_hostname.stdout}}"
+        dest: /etc/mesos-master/hostname
+        mode: 0644
+
+    # Tambien se puede configurar la ip del master con (export MESOS_IP=158.42.104.229)
+    - name: Set Mesos Master ip (debian)
+      copy:
+        content: "{{master_ip_deb.stdout}}"
+        dest: /etc/mesos-master/ip
+        mode: 0644
+      when: ansible_os_family == "Debian"
+
+    - name: Set Mesos Master ip (redhat)
+      copy:
+        content: "{{master_ip_rht.stdout}}"
+        dest: /etc/mesos-master/ip
+        mode: 0644
+      when: ansible_os_family == "RedHat"
+ 
+    - name: Set Mesos Master quorum count
+      copy:
+        content: "{{QUORUM}}"
+        dest: /etc/mesos-master/quorum
+        mode: 0644
+
+    - name: start up the mesos-master
+      service: name=mesos-master state=started enabled=yes
