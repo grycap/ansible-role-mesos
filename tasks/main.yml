@@ -34,9 +34,9 @@
 
     - name: configure containerizers
       shell: echo 'docker,mesos' | sudo tee /etc/mesos-slave/containerizers
-      when: "'docker' in TEMPLATES"
+      #when: "'docker' in TEMPLATES"
     - shell: echo '5mins' | sudo tee /etc/mesos-slave/executor_registration_timeout
-      when: "'docker' in TEMPLATES"
+      #when: "'docker' in TEMPLATES"
 
     - name: create log directory  
       file:
