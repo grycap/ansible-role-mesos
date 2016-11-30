@@ -48,7 +48,7 @@
           - mesos-slave
 
     - include: master.yml
-      when: mesos_install_mode == "master"
+      when: mesos_install_mode == "front"
 
     - include: slave.yml
-      when: mesos_install_mode == "slave"
+      when: mesos_install_mode == "wn"
