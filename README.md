@@ -11,12 +11,12 @@ Example Playbook
 ```
   - hosts: server
   roles:
-  - { role: 'grycap.mesos', mesos_install_mode: "master"}
+  - { role: 'grycap.mesos', mesos_install_mode: "front"}
 ```
 ```
   - hosts: client
   roles:
-  - { role: 'grycap.mesos', mesos_install_mode: "slave"}
+  - { role: 'grycap.mesos', mesos_install_mode: "wn"}
 ```
 
 Contributing to the role
