@@ -1,2 +1,3 @@
 ---
 mesos_install_mode: front
+mesos_ssh_user: grycap
