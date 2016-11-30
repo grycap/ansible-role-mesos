@@ -4,7 +4,7 @@
 Mesos Role
 ==========
 
-Installs a Mesos cluster (recipe for EC3)
+Installs a Mesos cluster (recipe for EC3). Mesos current stable version: 1.1.0
 
 Example Playbook
 ----------------
