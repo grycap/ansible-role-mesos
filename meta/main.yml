@@ -16,4 +16,4 @@ galaxy_info:
 
 dependencies: 
    - { role: 'grycap.docker' }
-   - { role: 'grycap.ssh', ssh_type_of_node: "{{ slurm_type_of_node }}", ssh_user: "{{ slurm_ssh_user }}" }
+   - { role: 'grycap.ssh', ssh_type_of_node: "{{ mesos_install_mode }}", ssh_user: "{{ mesos_ssh_user }}" }
