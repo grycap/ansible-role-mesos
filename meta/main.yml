@@ -11,9 +11,10 @@ galaxy_info:
   - name: EL
     versions:
     - 7
-  galaxy_tags: 
+  galaxy_tags:
    - mesos
 
-dependencies: 
-   - { role: 'grycap.docker' }
-   - { role: 'grycap.ssh', ssh_type_of_node: "{{ mesos_install_mode }}", ssh_user: "{{ mesos_ssh_user }}" }
+dependencies:
+  - { role: 'grycap.ntp', ntp_config_server: [ntp.upv.es, ntp.uv.es] }
+  - { role: 'grycap.docker' }
+  - { role: 'grycap.ssh', ssh_type_of_node: "{{ mesos_install_mode }}", ssh_user: "{{ mesos_ssh_user }}" }
