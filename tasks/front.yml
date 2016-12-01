@@ -8,7 +8,7 @@
         for i in `seq 1 {{max_number_of_nodes}}`; do
           item="{{vnode_prefix}}${i}";
           grep -q "\<${item}\>" /etc/hosts || echo "127.0.0.1 ${item} ${item}.localdomain" >> /etc/hosts;
-      done
+        done
 
     - name: Obtain master IP in Deb systems
       shell: ifconfig eth0 | sed -n '/inet addr/s/.*addr.\([^ ]*\) .*/\1/p'
