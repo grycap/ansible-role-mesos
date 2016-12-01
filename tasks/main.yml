@@ -44,8 +44,8 @@
         state: directory
         mode: 0755
 
-    - include: master.yml
+    - include: front.yml
       when: mesos_install_mode == "front"
 
-    - include: slave.yml
+    - include: wn.yml
       when: mesos_install_mode == "wn"
