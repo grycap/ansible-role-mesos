@@ -1,4 +1,5 @@
 ---
-mesos_install_mode: front
-mesos_ssh_user: grycap
+mesos_install_mode: "front"
+mesos_ssh_user: "grycap"
 mesos_log_dir: "/var/log/mesos"
+vnode_prefix: "wn"
