@@ -1,5 +1,7 @@
 ---
-mesos_install_mode: "front"
+# Type of node to install: front or wn
+mesos_type_of_node: "front"
 mesos_ssh_user: "grycap"
 mesos_log_dir: "/var/log/mesos"
 vnode_prefix: "wn"
+max_number_of_nodes: 3

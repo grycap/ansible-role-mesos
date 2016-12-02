@@ -1,0 +1,6 @@
+---
+  - name: Add key for Mesosphere repository for RedHat 7 systems
+    command: rpm -Uvh http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm creates=/usr/bin/mesos
+
+  - name: Install mesos package in RedHat 7
+    yum: name=mesos,mesosphere-zookeeper,wget update_cache=yes
