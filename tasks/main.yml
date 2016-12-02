@@ -1,6 +1,6 @@
 ---
   - name: Include "{{ansible_os_family}}" mesos recipe
-    include: "{{ansible_os_family}}.yaml"
+    include: "{{ansible_os_family}}.yml"
 
   - name: Configure containerizers
     shell: echo 'docker,mesos' | sudo tee /etc/mesos-slave/containerizers
@@ -15,4 +15,4 @@
       mode: 0755
 
   - name: Include "{{mesos_type_of_node}}" mesos recipe
-    include: "{{mesos_type_of_node}}.yaml"
+    include: "{{mesos_type_of_node}}.yml"
