@@ -6,17 +6,34 @@ Mesos Role
 
 Installs a Mesos cluster (recipe for EC3). Mesos current stable version: 1.1.0
 
+Role Variables
+--------------
+
+The variables that can be passed to this role and a brief description about them are as follows.
+
+  	# Type of node to install: front or wn
+	  mesos_type_of_node: front
+  	# SSH user
+  	mesos_ssh_user: "grycap"
+  	# Prefix to set to the Mesos working nodes
+  	vnode_prefix: wn
+  	# Directory to save the Mesos log
+  	mesos_log_dir: "/var/log/mesos"
+  	#Max number of nodes of the cluster
+  	max_number_of_nodes: 3
+
+
 Example Playbook
 ----------------
 ```
   - hosts: server
   roles:
-  - { role: 'grycap.mesos', mesos_install_mode: "front"}
+  - { role: 'grycap.mesos', mesos_type_of_node: "front"}
 ```
 ```
   - hosts: client
   roles:
-  - { role: 'grycap.mesos', mesos_install_mode: "wn"}
+  - { role: 'grycap.mesos', mesos_type_of_node: "wn", vnode_prefix: 'wn'}
 ```
 
 Contributing to the role
