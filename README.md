@@ -12,7 +12,7 @@ Role Variables
 The variables that can be passed to this role and a brief description about them are as follows.
 
   	# Type of node to install: front or wn
-	  mesos_type_of_node: front
+	mesos_type_of_node: front
   	# SSH user
   	mesos_ssh_user: "grycap"
   	# Prefix to set to the Mesos working nodes
