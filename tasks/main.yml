@@ -15,4 +15,4 @@
       mode: 0755
 
   - name: Include "{{mesos_type_of_node}}" mesos recipe
-    include: "{{mesos_type_of_node}}.yml"
+    include: "{{mesos_type_of_node}}.yaml"
