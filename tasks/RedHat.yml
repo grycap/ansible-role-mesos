@@ -1,6 +1,11 @@
 ---
-  - name: Add key for Mesosphere repository for RedHat 7 systems
-    command: rpm -Uvh http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm creates=/usr/bin/mesos
+  - name: Install marathon repo in RedHat 6
+    yum: pkg=http://repos.mesosphere.com/el/6/noarch/RPMS/mesosphere-el-repo-6-3.noarch.rpm state=present
+    when: ansible_distribution_major_version == "6"
 
-  - name: Install mesos package in RedHat 7
+  - name: Install marathon repo in RedHat 7
+    yum: pkg=http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-3.noarch.rpm state=present
+    when: ansible_distribution_major_version == "7"
+
+  - name: Install mesos package in RedHat
     yum: name=mesos,mesosphere-zookeeper,wget update_cache=yes
