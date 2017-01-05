@@ -10,32 +10,9 @@
           grep -q "\<${item}\>" /etc/hosts || echo "127.0.0.1 ${item} ${item}.localdomain" >> /etc/hosts;
         done
 
-    - name: Obtain master IP in Deb systems
-      shell: ifconfig eth0 | sed -n '/inet addr/s/.*addr.\([^ ]*\) .*/\1/p'
-      #shell:  wget -qO- ifconfig.me/ip
-      register: master_ip_deb
-      when: ansible_os_family == "Debian"
-
-    - name: Obtain master IP in RedHat systems
-      shell: ifconfig ens3 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'
-      register: master_ip_rht
-      when: ansible_os_family == "RedHat"
-
-    - name: Obtain master nodename
-      shell: hostname | cut -d "." -f 1
-      register: master_hostname
-
-    - name: Set ZooKeeper URL (debian)# used for leader election amongst masters
+    - name: Set ZooKeeper URL # used for leader election amongst masters
       copy:
-        #content: "zk://{{IM_NODE_PUBLIC_IP}}:2181/mesos"
-        content: "zk://{{master_ip_deb.stdout}}:2181/mesos"
-        dest: /etc/mesos/zk
-        mode: 0644
-      when: ansible_os_family == "Debian"
-
-    - name: Set ZooKeeper URL (redhat)# used for leader election amongst masters
-      copy:
-        content: "zk://{{master_ip_rht.stdout}}:2181/mesos"
+        content: "zk://{{ansible_default_ipv4.address}}:2181/mesos"
         dest: /etc/mesos/zk
         mode: 0644
       when: ansible_os_family == "RedHat"
@@ -67,24 +44,16 @@
 
     - name: Set Mesos Master hostname
       copy:
-        content: "{{master_hostname.stdout}}"
+        content: "{{ansible_hostname}}"
         dest: /etc/mesos-master/hostname
         mode: 0644
 
     # Tambien se puede configurar la ip del master con (export MESOS_IP=158.42.104.229)
     - name: Set Mesos Master ip (debian)
       copy:
-        content: "{{master_ip_deb.stdout}}"
+        content: "{{ansible_default_ipv4.address}}"
         dest: /etc/mesos-master/ip
         mode: 0644
-      when: ansible_os_family == "Debian"
-
-    - name: Set Mesos Master ip (redhat)
-      copy:
-        content: "{{master_ip_rht.stdout}}"
-        dest: /etc/mesos-master/ip
-        mode: 0644
-      when: ansible_os_family == "RedHat"
 
     - name: Set Mesos Master quorum count
       copy:
