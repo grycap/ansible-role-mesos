@@ -1,6 +1,6 @@
 ---
   - name: Install marathon repo in RedHat 6
-    yum: pkg=http://repos.mesosphere.com/el/6/noarch/RPMS/mesosphere-el-repo-6-3.noarch.rpm state=present
+    yum: pkg=http://repos.mesosphere.com/el/6/noarch/RPMS/mesosphere-el-repo-6-2.noarch.rpm state=present
     when: ansible_distribution_major_version == "6"
 
   - name: Install marathon repo in RedHat 7
