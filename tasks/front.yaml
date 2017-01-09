@@ -17,15 +17,15 @@
         mode: 0644
       when: ansible_os_family == "RedHat"
 
-    - name: start up zookeeper
+    - name: start up zookeeper in Centos 7
       service: name=zookeeper state=started enabled=yes
       when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
 
-    - name: start up zookeeper
+    - name: start up zookeeper in Centos 6
       command: /usr/lib/zookeeper/bin/zkServer.sh start 
       when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "6"
 
-    - name: start up zookeeper
+    - name: start up zookeeper in Deb systems
       service: name=zookeeper state=started enabled=yes
       when: ansible_os_family == "Debian"
 
@@ -45,11 +45,11 @@
     # Disable mesos-slave in Redhat
     - name: Stop the Mesos Slave service
       command: systemctl stop mesos-slave.service
-      when: ansible_os_family == "RedHat"
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
 
     - name: Disable the Mesos Slave service
       command: systemctl disable mesos-slave.service
-      when: ansible_os_family == "RedHat"
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
 
     - name: Set Mesos Master hostname
       copy:
@@ -70,8 +70,17 @@
         dest: /etc/mesos-master/quorum
         mode: 0644
 
-    - name: start up the mesos-master
+    - name: start up the mesos-master in Deb systems
       service: name=mesos-master state=started enabled=yes
+      when: ansible_os_family == "Debian"
+
+    - name: start up the mesos-master in Centos 7
+      service: name=mesos-master state=started enabled=yes
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
+ 
+    - name: start up the mesos-master in Centos 6
+      command: start mesos-master
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "6"
 
     - file: path=/etc/clues2/ state=directory
     - copy:
