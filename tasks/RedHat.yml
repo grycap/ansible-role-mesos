@@ -1,11 +1,20 @@
 ---
-  - name: Install marathon repo in RedHat 6
+  - name: Add Mesosphere repo in RedHat 6
     yum: pkg=http://repos.mesosphere.com/el/6/noarch/RPMS/mesosphere-el-repo-6-2.noarch.rpm state=present
     when: ansible_distribution_major_version == "6"
+ 
+  - name: Add Zookeeper repo in RedHat 6
+    yum: pkg=http://archive.cloudera.com/cdh4/one-click-install/redhat/6/x86_64/cloudera-cdh-4-0.x86_64.rpm state=present
+    when: ansible_distribution_major_version == "6"
 
-  - name: Install marathon repo in RedHat 7
+  - name: Add Mesosphere repo in RedHat 7
     yum: pkg=http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-3.noarch.rpm state=present
     when: ansible_distribution_major_version == "7"
 
-  - name: Install mesos package in RedHat
+  - name: Install mesos package in RedHat 7
     yum: name=mesos,mesosphere-zookeeper,wget update_cache=yes
+    when: ansible_distribution_major_version == "7"
+  
+  - name: Install mesos package in RedHat 6
+    yum: name=mesos,zookeeper,zookeeper-server,wget update_cache=yes
+    when: ansible_distribution_major_version == "6"
