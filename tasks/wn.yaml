@@ -1,14 +1,4 @@
 ---
-    - name: Obtain slave IP in Debian
-      shell: ifconfig eth0 | sed -n '/inet addr/s/.*addr.\([^ ]*\) .*/\1/p'
-      register: slave_ip_deb
-      when: ansible_os_family == "Debian"
-
-    - name: Obtain slave IP in Redhat
-      shell: ifconfig ens3 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'
-      register: slave_ip_rht
-      when: ansible_os_family == "RedHat"
-
     - name: Obtain slave nodename
       shell: hostname | cut -d "." -f 1
       register: slave_hostname
@@ -25,13 +15,13 @@
       when: ansible_os_family == "Debian"
 
     # Disable zookeeper in Redhat
-    - name: Stop zookeeper in wns (redhat)
+    - name: Stop zookeeper in wns (redhat 7)
       command: systemctl stop zookeeper.service
-      when: ansible_os_family == "RedHat"
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
 
-    - name: Disable the ZooKeeper service (redhat)
+    - name: Disable the ZooKeeper service (redhat 7)
       command: systemctl disable zookeeper.service
-      when: ansible_os_family == "RedHat"
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
 
     - name: copy zk file from the frontend
       copy: src=/etc/mesos/zk dest=/etc/mesos/zk
@@ -48,13 +38,13 @@
       when: ansible_os_family == "Debian"
 
     # Disable mesos-master in Redhat
-    - name: Stop mesos master in wns (redhat)
+    - name: Stop mesos master in wns (redhat 7)
       command: systemctl stop mesos-master.service
-      when: ansible_os_family == "RedHat"
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
 
-    - name: Disable mesos master in wns (redhat)
+    - name: Disable mesos master in wns (redhat 7)
       command: systemctl disable mesos-master.service
-      when: ansible_os_family == "RedHat"
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
 
     - name: Set Mesos Slave hostname
       copy:
@@ -62,35 +52,21 @@
         dest: /etc/mesos-slave/hostname
         mode: 0644
 
-    - name: Set Mesos Slave ip (debian)
+    - name: Set Mesos Slave ip
       copy:
-        content: "{{slave_ip_deb.stdout}}"
+        content: "{{ansible_default_ipv4.address}}"
         dest: /etc/mesos-slave/ip
         mode: 0644
-      when: ansible_os_family == "Debian"
 
-    - name: Set Mesos Slave ip (redhat)
-      copy:
-        content: "{{slave_ip_rht.stdout}}"
-        dest: /etc/mesos-slave/ip
-        mode: 0644
-      when: ansible_os_family == "RedHat"
-
-    - block:
-      - name: Set Mesos authentication
-        copy:
-          content: "/usr/etc/mesos/credential"
-          dest: /etc/mesos-slave/credential
-          mode: 0400
-
-      - name: Set Mesos authentication
-        copy:
-          content: '{"principal":"{{principal}}","secret":"{{secret}}"}'
-          dest: /usr/etc/mesos/credential
-          mode: 0400
-
-      tags:
-        - authentication
-
-    - name: start up the mesos-slave
+    - name: start up the mesos-slave in Centos 7
       service: name=mesos-slave state=started
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
+      
+    - name: start up the mesos-slave in Deb systems
+      service: name=mesos-slave state=started
+      when: ansible_os_family == "Debian"
+  
+    - name: start up the mesos-slave in Centos 6
+      command: start mesos-slave 
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "6"
+
