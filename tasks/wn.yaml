@@ -76,6 +76,21 @@
         mode: 0644
       when: ansible_os_family == "RedHat"
 
+    - block:
+      - name: Set Mesos authentication
+        copy:
+          content: "/usr/etc/mesos/credential"
+          dest: /etc/mesos-slave/credential
+          mode: 0400
+
+      - name: Set Mesos authentication
+        copy:
+          content: '{"principal":"{{principal}}","secret":"{{secret}}"}'
+          dest: /usr/etc/mesos/credential
+          mode: 0400
+
+      tags:
+        - authentication
+
     - name: start up the mesos-slave
       service: name=mesos-slave state=started
-
