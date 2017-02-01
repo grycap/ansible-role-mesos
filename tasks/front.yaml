@@ -57,6 +57,28 @@
         dest: /etc/mesos-master/hostname
         mode: 0644
 
+    - block:
+      - name: Set Mesos framework authentication (frameworks)
+        copy:
+          content: "true"
+          dest: /etc/mesos-master/authenticate_frameworks
+          mode: 0600
+
+      - name: Set Mesos framework authentication (credentials)
+        copy:
+          content: "/usr/etc/mesos/credentials"
+          dest: /etc/mesos-master/credentials
+          mode: 0600
+
+      - name: Set Mesos security keys
+        copy:
+          content: '{"credentials":[ {"principal": "{{principal}}", "secret": "{{secret}}" } ] }'
+          dest: /usr/etc/mesos/credentials
+          mode: 0600
+
+      tags:
+        - authentication
+
     # Tambien se puede configurar la ip del master con (export MESOS_IP=158.42.104.229)
     - name: Set Mesos Master ip (debian)
       copy:

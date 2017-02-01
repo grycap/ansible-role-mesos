@@ -52,7 +52,7 @@
         dest: /etc/mesos-slave/hostname
         mode: 0644
 
-    - name: Set Mesos Slave ip (debian)
+    - name: Set Mesos Slave ip
       copy:
         content: "{{ansible_default_ipv4.address}}"
         dest: /etc/mesos-slave/ip
