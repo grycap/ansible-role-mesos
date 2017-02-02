@@ -1,20 +1,20 @@
 ---
-  - name: Add key for Mesosphere repository for Debian systems
-    apt_key: url=http://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0xE56151BF state=present
+- name: Add key for Mesosphere repository for Debian systems
+  apt_key: url=http://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0xE56151BF state=present
 
-  - name: Determine Linux distribution distributor
-    shell: lsb_release -is | tr '[:upper:]' '[:lower:]'
-    register: release_distributor
+- name: Determine Linux distribution distributor
+  shell: lsb_release -is | tr '[:upper:]' '[:lower:]'
+  register: release_distributor
 
-  - name: Determine Linux distribution codename
-    command: lsb_release -cs
-    register: release_codename
+- name: Determine Linux distribution codename
+  command: lsb_release -cs
+  register: release_codename
 
-  - name: Add Mesosphere repository to sources list
-    copy:
-      content: "deb http://repos.mesosphere.io/{{release_distributor.stdout}} {{release_codename.stdout}} main"
-      dest: /etc/apt/sources.list.d/mesosphere.list
-      mode: 0644
+- name: Add Mesosphere repository to sources list
+  copy:
+    content: "deb http://repos.mesosphere.io/{{release_distributor.stdout}} {{release_codename.stdout}} main"
+    dest: /etc/apt/sources.list.d/mesosphere.list
+    mode: 0644
 
-  - name: Install mesos package in Debian
-    apt: name=mesos state=present update_cache=yes
+- name: Install mesos package in Debian
+  apt: name=mesos state=present update_cache=yes
