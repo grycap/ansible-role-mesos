@@ -1,18 +1,24 @@
 ---
-- name: Include "{{ansible_os_family}}" mesos recipe
-  include: "{{ansible_os_family}}.yml"
+- stat: path=/usr/bin/mesos
+  register: mesos_installed
 
-- name: Configure containerizers
-  shell: echo 'docker,mesos' | sudo tee /etc/mesos-slave/containerizers
+- block:
+  - name: Include "{{ansible_os_family}}" mesos recipe
+    include: "{{ansible_os_family}}.yml"
 
-- name: Configure executor registration timeout
-  shell: echo '5mins' | sudo tee /etc/mesos-slave/executor_registration_timeout
+  - name: Configure containerizers
+    shell: echo 'docker,mesos' | sudo tee /etc/mesos-slave/containerizers
 
-- name: create log directory
-  file:
-    path: "{{ mesos_log_dir }}"
-    state: directory
-    mode: 0755
+  - name: Configure executor registration timeout
+    shell: echo '5mins' | sudo tee /etc/mesos-slave/executor_registration_timeout
 
-- name: Include "{{mesos_type_of_node}}" mesos recipe
-  include: "{{mesos_type_of_node}}.yml"
+  - name: create log directory
+    file:
+      path: "{{ mesos_log_dir }}"
+      state: directory
+      mode: 0755
+
+  - name: Include "{{mesos_type_of_node}}" mesos recipe
+    include: "{{mesos_type_of_node}}.yml"
+
+  when: not mesos_installed.stat.exists

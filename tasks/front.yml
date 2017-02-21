@@ -85,7 +85,7 @@
 
 - name: Set Mesos Master quorum count
   copy:
-    content: "{{QUORUM}}"
+    content: "{{quorum}}"
     dest: /etc/mesos-master/quorum
     mode: 0644
 

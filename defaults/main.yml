@@ -5,5 +5,6 @@ mesos_ssh_user: "grycap"
 mesos_log_dir: "/var/log/mesos"
 vnode_prefix: "wn"
 max_number_of_nodes: 3
+quorum: 1
 principal: ubuntu
 secret: ubuntusecret
