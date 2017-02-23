@@ -108,3 +108,25 @@
        {{vnode_prefix}}{{number}}
        {% endfor %}
     dest: "/etc/clues2/mesos_vnodes.info"
+
+- name: Create Mesos DNS directory
+  file:
+    path: "/etc/mesos-dns"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: Copy Mesos DNS Executable
+  copy: dest=/etc/mesos-dns/mesos-dns-v0.6.0-linux-amd64 src=mesos-dns-v0.6.0-linux-amd64 mode=0755 force=no
+
+- name: Copy Mesos DNS config
+  template:
+    src: "mesos-dns-conf.json.j2"
+    dest: "/etc/mesos-dns/mesos-dns-conf.json"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
+- name: Init mesos DNS
+  command: /etc/mesos-dns/mesos-dns-v0.6.0-linux-amd64 -config=/etc/mesos-dns/mesos-dns-conf.json {{ mesos_dns_extra_commands }}
