@@ -118,7 +118,7 @@
     mode: "0755"
 
 - name: Copy Mesos DNS Executable
-  copy: dest=/etc/mesos-dns/mesos-dns-v0.6.0-linux-amd64 src=mesos-dns-v0.6.0-linux-amd64 mode=0755 force=no
+  copy: dest=/etc/mesos-dns/mesos-dns-v0.6.0-linux-amd64 src=dns/mesos-dns-v0.6.0-linux-amd64 mode=0755 force=no
 
 - name: Copy Mesos DNS config
   template:
