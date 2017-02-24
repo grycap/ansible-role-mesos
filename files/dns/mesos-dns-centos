@@ -22,9 +22,8 @@
 
 USER="root"
 APPNAME="mesos-dns"
-APPDIR="/etc/mesos-dns"
-APPBIN="mesos-dns-v0.6.0-linux-amd64"
-APPARGS="-config=mesos-dns-conf.json -v=2"
+APPBIN="/etc/mesos-dns/mesos-dns-v0.6.0-linux-amd64"
+APPARGS="-config=/etc/mesos-dns/mesos-dns-conf.json -v=2"
 LOGFILE="/var/log/mesos/mesos-dns.log"
 LOCKFILE="/var/lock/subsys/$APPNAME"
 
