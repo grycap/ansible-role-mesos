@@ -8,6 +8,3 @@ max_number_of_nodes: 3
 quorum: 1
 principal: ubuntu
 secret: ubuntusecret
-
-# To see the logs add -v=2
-mesos_dns_extra_commands: ""

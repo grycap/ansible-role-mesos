@@ -1,0 +1,59 @@
+---
+- name: Create Mesos DNS directory
+  file:
+    path: "/etc/mesos-dns"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: Copy Mesos DNS Executable
+  copy:
+    src: "dns/mesos-dns-v0.6.0-linux-amd64"
+    dest: "/etc/mesos-dns/mesos-dns-v0.6.0-linux-amd64"
+    force: "no"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: Copy Mesos DNS config
+  template:
+    src: "mesos-dns-conf.json.j2"
+    dest: "/etc/mesos-dns/mesos-dns-conf.json"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
+- block:
+  - name: Copy Mesos DNS init.d script
+    copy:
+      src: "dns/mesos-dns-debian"
+      dest: "/etc/init.d/mesos-dns"
+      force: "no"
+      owner: "root"
+      group: "root"
+      mode: "0755"
+
+  - name: Init mesos DNS
+    command: update-rc.d mesos-dns defaults
+    notify:
+    - start mesos-dns
+
+  when: ansible_os_family == "Debian"
+
+- block:
+  - name: Copy Mesos DNS init.d script
+    copy:
+      src: "dns/mesos-dns-centos"
+      dest: "/etc/init.d/mesos-dns"
+      force: "no"
+      owner: "root"
+      group: "root"
+      mode: "0755"
+
+  - name: Init mesos DNS
+    command: chkconfig mesos-dns on
+    notify:
+    - start mesos-dns
+    
+  when: ansible_os_family == "RedHat"
