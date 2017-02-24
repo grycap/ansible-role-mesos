@@ -134,7 +134,15 @@
     group: "root"
     mode: "0644"
 
+- name: Copy Mesos DNS init.d script
+  template:
+    src: "dns/mesos-dns"
+    dest: "/etc/init.d/mesos-dns"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
 - name: Init mesos DNS
-  shell: ./mesos-dns-v0.6.0-linux-amd64 -config=mesos-dns-conf.json -v=2 >> /var/log/mesos/mesos-dns.log &
-  args:
-    chdir: /etc/mesos-dns
+  command: update-rc.d mesos-dns defaults
+  notify:
+  - start mesos-dns
