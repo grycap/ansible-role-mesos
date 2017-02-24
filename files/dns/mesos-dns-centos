@@ -1,15 +1,15 @@
 #!/bin/sh
 #
-# example start stop daemon for CentOS (sysvinit)
+# Mesos-dns start stop daemon for CentOS (sysvinit)
 #
 # chkconfig: - 64 36
 # Default-Start: 2 3 4 5
 # Default-Stop: 0 1 2 3 4 6
 # Required-Start:
-# description: example start stop daemon for CentOS
-# processname: python
+# description: mesos-dns start stop daemon for CentOS
+# processname: mesos-dns
 # pidfile: none
-# lockfile: /var/lock/subsys/example
+# lockfile: /var/lock/subsys/mesos-dns
 
 # Source function library.
 . /etc/rc.d/init.d/functions
