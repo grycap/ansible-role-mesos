@@ -1,12 +1,12 @@
 ---
 - name: start mesos-dns
-  name: mesos-dns
+  service: mesos-dns
   state: started
 
 - name: stop mesos-dns
-  name: mesos-dns
+  service: mesos-dns
   state: stopped
 
 - name: restart mesos-dns
-  name: mesos-dns
+  service: mesos-dns
   state: restarted
