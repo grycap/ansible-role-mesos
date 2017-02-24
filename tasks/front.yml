@@ -135,9 +135,10 @@
     mode: "0644"
 
 - name: Copy Mesos DNS init.d script
-  template:
+  copy:
     src: "dns/mesos-dns"
     dest: "/etc/init.d/mesos-dns"
+    force: "no"
     owner: "root"
     group: "root"
     mode: "0755"
