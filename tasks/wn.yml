@@ -2,6 +2,9 @@
 - name: Copy zk file from the frontend
   copy: src=/etc/mesos/zk dest=/etc/mesos/zk
 
+- name: Include DNS configuration
+  include: "dns.yml"
+
 - block:
   - name: Stop zookeeper service (Debian)
     service: name=zookeeper state=stopped
