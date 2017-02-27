@@ -64,12 +64,18 @@
 - name: Add config line required for DNS purposes
   lineinfile:
     path: "/etc/resolvconf/resolv.conf.d/head"
-    line: 'nameserver "{{ hostvars[groups["front"][0]]["IM_NODE_PRIVATE_IP"] }}"'
+    line: nameserver "{{ hostvars[groups["front"][0]]["IM_NODE_PRIVATE_IP"] }}"
     state: present
     create: yes
+
+- set_fact: NET_INTERFACE=eth1
+  when: mesos_type_of_node == "front"
+
+- set_fact: NET_INTERFACE=eth0
+  when: mesos_type_of_node == "wn"
 
 - name: Restart network after resolv.conf file modification
   service:
     name: network
     state: restarted
-    args: eth0
+    args: "{{ NET_INTERFACE }}"
