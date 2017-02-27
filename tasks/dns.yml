@@ -1,5 +1,5 @@
 ---
-block:
+- block:
   - name: Create Mesos DNS directory
     file:
       path: "/etc/mesos-dns"
@@ -59,7 +59,7 @@ block:
 
     when: ansible_os_family == "RedHat"
 
-  when: "{{mesos_type_of_node}}" == "front"
+  when: mesos_type_of_node == "front"
 
 - name: Add config line required for DNS purposes
   lineinfile:
