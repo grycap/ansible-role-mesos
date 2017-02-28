@@ -64,7 +64,7 @@
 - block:
   - name: Add config line required for DNS purposes
     lineinfile:
-      path: "/etc/resolvconf/resolv.conf.d/head"
+      dest: "/etc/resolvconf/resolv.conf.d/head"
       line: "nameserver {{ mesos_front_private_ip }}"
       state: present
       create: yes
