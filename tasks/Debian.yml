@@ -17,4 +17,4 @@
     mode: 0644
 
 - name: Install mesos package in Debian
-  apt: name=mesos state=present update_cache=yes
+  apt: name=mesos,network-manager state=present update_cache=yes

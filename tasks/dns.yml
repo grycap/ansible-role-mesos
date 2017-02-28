@@ -62,6 +62,7 @@
   when: mesos_type_of_node == "front"
 
 - block:
+
   - name: Add config line required for DNS purposes
     lineinfile:
       dest: "/etc/resolvconf/resolv.conf.d/head"
@@ -69,10 +70,12 @@
       state: present
       create: yes
 
-  - name: Restart network after resolv.conf file modification
-    service:
-      name: network
-      state: restarted
-      args: "eth0"
+  - name: Restart network-manager
+    service: name=network-manager state=restarted
+    when: ansible_os_family == "Debian"
+
+  - name: Restart network-manager
+    service: name=network state=restarted
+    when: ansible_os_family == "RedHat"
 
   when: mesos_type_of_node == "wn"
