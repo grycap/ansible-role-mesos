@@ -1,0 +1,9 @@
+---
+- name: start mesos-dns
+  service: name=mesos-dns state=started
+
+- name: stop mesos-dns
+  service: name=mesos-dns state=stopped
+
+- name: restart mesos-dns
+  service: name=mesos-dns state=restarted
