@@ -65,7 +65,7 @@
   - name: Add config line required for DNS purposes
     lineinfile:
       path: "/etc/resolvconf/resolv.conf.d/head"
-      line: 'nameserver "{{ hostvars[groups["front"][0]]["IM_NODE_PRIVATE_IP"] | default("") }}"'
+      line: "nameserver {{ mesos_front_private_ip }}"
       state: present
       create: yes
 
