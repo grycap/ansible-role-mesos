@@ -45,8 +45,8 @@
         dest: "/usr/libexec/mesos/noop"
       - src: "cni-plugins/ptp"
         dest: "/usr/libexec/mesos/ptp"
-      - src: "cni-plugins/tunning"
-        dest: "/usr/libexec/mesos/tunning"
+      - src: "cni-plugins/tuning"
+        dest: "/usr/libexec/mesos/tuning"
 
   - name: Create mesos-salve configuration files
     copy:
