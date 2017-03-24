@@ -1,0 +1,69 @@
+---
+- name: Create net scripts folder
+  file: path="/etc/cni/net.d" state="directory" mode="0755"
+
+- name: Copy net templates
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "0644"
+  with_items:
+    - src: "cni/10-mynet.conf.j2"
+      dest: "/etc/cni/net.d/10-mynet.conf"
+    - src: "cni/99-loopback.conf.j2"
+      dest: "/etc/cni/net.d/99-loopback.conf"
+
+- block:
+
+  - name: Create plugins folder
+    file: path="/usr/libexec/mesos/cni-plugins" state="directory" mode="0755"
+
+  - name: Copy the cni plugins
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      mode: 0755
+      force: "no"
+    with_items:
+      - src: "cni-plugins/bridge"
+        dest: "/usr/libexec/mesos/bridge"
+      - src: "cni-plugins/cnitool"
+        dest: "/usr/libexec/mesos/cnitool"
+      - src: "cni-plugins/dhcp"
+        dest: "/usr/libexec/mesos/dhcp"
+      - src: "cni-plugins/flannel"
+        dest: "/usr/libexec/mesos/flannel"
+      - src: "cni-plugins/host-local"
+        dest: "/usr/libexec/mesos/host-local"
+      - src: "cni-plugins/ipvlan"
+        dest: "/usr/libexec/mesos/ipvlan"
+      - src: "cni-plugins/loopback"
+        dest: "/usr/libexec/mesos/loopback"
+      - src: "cni-plugins/macvlan"
+        dest: "/usr/libexec/mesos/macvlan"
+      - src: "cni-plugins/noop"
+        dest: "/usr/libexec/mesos/noop"
+      - src: "cni-plugins/ptp"
+        dest: "/usr/libexec/mesos/ptp"
+      - src: "cni-plugins/tunning"
+        dest: "/usr/libexec/mesos/tunning"
+
+  - name: Create mesos-salve configuration files
+    copy:
+      content: "{{ item.content }}"
+      dest: "{{ item.dest }}"
+      mode: 0755
+      force: "no"
+    with_items:
+      - content: "/etc/cni/net.d/"
+        dest: "/etc/mesos-slave/network_cni_config_dir"
+      - content: "/usr/libexec/mesos/cni-plugins"
+        dest: "/etc/mesos-slave/network_cni_plugins_dir"
+      - content: "filesystem/linux,docker/runtime"
+        dest: "/etc/mesos-slave/isolation"
+      - content: "appc,docker"
+        dest: "/etc/mesos-slave/image_providers"
+    notify: restart mesos-slave
+
+
+  when: mesos_type_of_node == "wn"
