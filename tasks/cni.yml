@@ -1,4 +1,7 @@
 ---
+- name: Install required packages by cni
+  apt: name=jq state=present
+
 - name: Create net scripts folder
   file: path="/etc/cni/net.d" state="directory" mode="0755"
 
@@ -14,7 +17,6 @@
       dest: "/etc/cni/net.d/99-loopback.conf"
 
 - block:
-
   - name: Create plugins folder
     file: path="/usr/libexec/mesos/cni-plugins" state="directory" mode="0755"
 
