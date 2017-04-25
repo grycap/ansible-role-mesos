@@ -18,4 +18,3 @@ dependencies:
   - { role: 'grycap.ntp', ntp_config_server: [ntp.upv.es, ntp.uv.es] }
   - { role: 'grycap.docker' }
   - { role: 'grycap.ssh', ssh_type_of_node: "{{ mesos_type_of_node }}", ssh_user: "{{ mesos_ssh_user }}" }
-  - { role: 'grycap.zookeeper' }
