@@ -10,20 +10,20 @@
       grep -q "\<${item}\>" /etc/hosts || echo "127.0.0.1 ${item} ${item}.localdomain" >> /etc/hosts;
     done
 
-- name: Set ZooKeeper URL # used for leader election amongst masters
-  copy:
-    content: "zk://{{ansible_default_ipv4.address}}:2181/mesos"
-    dest: /etc/mesos/zk
-    mode: 0644
+#- name: Set ZooKeeper URL # used for leader election amongst masters
+#  copy:
+#    content: "zk://{{ansible_default_ipv4.address}}:2181/mesos"
+#    dest: /etc/mesos/zk
+#    mode: 0644
 
 - block:
-  - name: start up zookeeper in Centos 6
-    command: /usr/lib/zookeeper/bin/zkServer.sh start
-    when: ansible_distribution_major_version == "6"
+#  - name: start up zookeeper in Centos 6
+#    command: /usr/lib/zookeeper/bin/zkServer.sh start
+#    when: ansible_distribution_major_version == "6"
 
   - block:
-    - name: start up zookeeper in Centos 7
-      service: name=zookeeper state=started enabled=yes
+#    - name: start up zookeeper in Centos 7
+#      service: name=zookeeper state=started enabled=yes
 
     # Disable mesos-slave in Redhat
     - name: Stop the Mesos Slave service
@@ -37,8 +37,8 @@
   when: ansible_os_family == "RedHat"
 
 - block:
-  - name: start up zookeeper in Deb systems
-    service: name=zookeeper state=started enabled=yes
+#  - name: start up zookeeper in Deb systems
+#    service: name=zookeeper state=started enabled=yes
 
   # Master tasks
   - name: Stop the Mesos Slave service
