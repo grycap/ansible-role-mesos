@@ -1,8 +1,4 @@
 ---
-#- stat: path=/usr/bin/mesos
-#  register: mesos_installed
-
-#- block:
 - name: Include "{{ansible_os_family}}" mesos recipe
   include: "{{ansible_os_family}}.yml"
 
@@ -20,5 +16,3 @@
 
 - name: Include "{{mesos_type_of_node}}" mesos recipe
   include: "{{mesos_type_of_node}}.yml"
-
-#  when: not mesos_installed.stat.exists
