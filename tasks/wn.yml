@@ -28,10 +28,10 @@
 
 - block:
   - name: Stop zookeeper service (CentOS 7)
-    command: systemctl stop zookeeper.service
+    command: systemctl stop zookeeper-server
 
   - name: Disable the ZooKeeper service (CentOS 7)
-    command: systemctl disable zookeeper.service
+    command: systemctl disable zookeeper-server
 
   # Disable mesos-master in Redhat
   - name: Stop mesos master service (CentOS 7)
