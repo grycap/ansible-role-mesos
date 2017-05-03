@@ -10,11 +10,11 @@
       grep -q "\<${item}\>" /etc/hosts || echo "127.0.0.1 ${item} ${item}.localdomain" >> /etc/hosts;
     done
 
-#- name: Set ZooKeeper URL # used for leader election amongst masters
-#  copy:
-#    content: "zk://{{ansible_default_ipv4.address}}:2181/mesos"
-#    dest: /etc/mesos/zk
-#    mode: 0644
+- name: Set ZooKeeper URL # used for leader election amongst masters
+  copy:
+    content: "zk://{{ansible_default_ipv4.address}}:2181/mesos"
+    dest: /etc/mesos/zk
+    mode: 0644
 
 - block:
 #  - name: start up zookeeper in Centos 6
