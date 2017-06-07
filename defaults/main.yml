@@ -9,3 +9,4 @@ quorum: 1
 principal: ubuntu
 secret: ubuntusecret
 mesos_front_private_ip: ""
+mesos_version: "latest"
