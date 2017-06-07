@@ -18,3 +18,8 @@
 
 - name: Install mesos package in Debian
   apt: name=mesos={{mesos_version}},network-manager state=present update_cache=yes
+  when: mesos_version != 'latest'
+
+- name: Install mesos package in Debian
+  apt: name=mesos,network-manager state=present update_cache=yes
+  when: mesos_version == 'latest'
