@@ -10,3 +10,4 @@ principal: ubuntu
 secret: ubuntusecret
 mesos_front_private_ip: ""
 mesos_docker_opts: ""
+mesos_version: ""
