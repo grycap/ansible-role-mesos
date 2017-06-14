@@ -8,6 +8,7 @@ galaxy_info:
   - name: Ubuntu
     versions:
     - trusty
+    - xenial
   - name: EL
     versions:
     - 7
@@ -16,6 +17,6 @@ galaxy_info:
 
 dependencies:
   - { role: 'grycap.ntp', ntp_config_server: [ntp.upv.es, ntp.uv.es] }
-  - { role: 'grycap.docker' }
+  - { role: 'grycap.docker', docker_opts: "{{ mesos_docker_opts }}" }
   - { role: 'grycap.ssh', ssh_type_of_node: "{{ mesos_type_of_node }}", ssh_user: "{{ mesos_ssh_user }}" }
   - { role: 'grycap.zookeeper' }
