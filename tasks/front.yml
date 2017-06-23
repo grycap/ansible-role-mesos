@@ -54,7 +54,7 @@
 
 - name: Set Mesos Master hostname
   copy:
-    content: "{{ansible_hostname}}"
+    content: "{{ansible_default_ipv4.address}}"
     dest: /etc/mesos-master/hostname
     mode: 0644
 
