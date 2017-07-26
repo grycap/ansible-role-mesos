@@ -60,6 +60,12 @@
     dest: /etc/mesos-slave/resources
     mode: 0644
 
+- name: Create 'registration timeout' file
+  copy:
+    content: "6hrs"
+    dest: /etc/mesos-slave/executor_registration_timeout
+    mode: 0644
+
 - name: start up the mesos-slave in Centos 7
   service: name=mesos-slave state=started
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
