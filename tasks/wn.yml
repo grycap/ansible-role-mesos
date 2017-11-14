@@ -8,7 +8,7 @@
   include: "dns.yml"
 
 - name: Stop and disable Zookeeer and Mesos master (Debian)
-    block:
+  block:
     - name: Stop Zookeeer and Mesos master services
       service: 
         name: "{{ item.name }}"
