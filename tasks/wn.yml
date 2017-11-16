@@ -1,80 +1,56 @@
 ---
 - name: Copy zk file from the frontend
-  copy: src=/etc/mesos/zk dest=/etc/mesos/zk
+  copy: 
+    src: "/etc/mesos/zk"
+    dest: "/etc/mesos/zk"
 
 - name: Include DNS configuration
   include: "dns.yml"
 
-- block:
-  - name: Stop zookeeper service (Debian)
-    service: name=zookeeper state=stopped
+- name: Stop and disable Zookeeer and Mesos master (Debian)
+  block:
+    - name: Stop Zookeeer and Mesos master services
+      service: 
+        name: "{{ item.name }}"
+        state: stopped
+      with_items:
+        - name: "zookeeper"
+        - name: "mesos-master"
 
-  - name: Disable the ZooKeeper service (Debian)
-    copy:
-      content: "manual"
-      dest: /etc/init/zookeeper.override
-      mode: 0644
-
-  - name: Stop mesos master service (Debian)
-    service: name=mesos-master state=stopped
-
-  - name: Disable mesos master service (Debian)
-    copy:
-      content: "manual"
-      dest: /etc/init/mesos-master.override
-      mode: 0644
-
+    - name: Disable Zookeeer and Mesos master services
+      template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        mode: "0664"        
+      with_items:
+        - src: "mesos-slave/disable_service.override.j2"
+          dest: "/etc/init/zookeeper.override"
+        - src: "mesos-slave/disable_service.override.j2"
+          dest: "/etc/init/mesos-master.override"
   when: ansible_os_family == "Debian"
 
-- block:
-  - name: Stop zookeeper service (CentOS 7)
-    command: systemctl stop zookeeper-server
-
-  - name: Disable the ZooKeeper service (CentOS 7)
-    command: systemctl disable zookeeper-server
-
-  # Disable mesos-master in Redhat
-  - name: Stop mesos master service (CentOS 7)
-    command: systemctl stop mesos-master.service
-
-  - name: Disable mesos master service (CentOS 7)
-    command: systemctl disable mesos-master.service
-
+- name: Stop and disable Zookeeer and Mesos master (CentOS 7)
+  command: "{{ item.command }}"
+  with_items:
+    - command: "systemctl stop zookeeper-server"
+    - command: "systemctl stop mesos-master.service"
+    - command: "systemctl disable zookeeper-server"
+    - command: "systemctl disable mesos-master.service"
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
 
-- name: Set Mesos Slave ip
-  copy:
-    content: "{{ansible_default_ipv4.address}}"
-    dest: /etc/mesos-slave/ip
-    mode: 0644
-
-- name: Set Mesos Slave hostname
-  copy:
-    content: "{{ansible_default_ipv4.address}}"
-    dest: /etc/mesos-slave/hostname
-    mode: 0644
-
-- name: Create 'resources' file
-  copy:
-    content: "{{mesos_slave_resources}}"
-    dest: /etc/mesos-slave/resources
-    mode: 0644
-  when: mesos_slave_resources != ""
-
-- name: Create 'registration timeout' file
-  copy:
-    content: "6hrs"
-    dest: /etc/mesos-slave/executor_registration_timeout
-    mode: 0644
-
-- name: start up the mesos-slave in Centos 7
-  service: name=mesos-slave state=started
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "7"
-
-- name: start up the mesos-slave in Deb systems
-  service: name=mesos-slave state=started
-  when: ansible_os_family == "Debian"
-
-- name: start up the mesos-slave in Centos 6
-  command: start mesos-slave
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "6"
+- name: Set Mesos Slave configuration files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "0664"
+  with_items:
+    - src: "mesos-slave/ip.j2"
+      dest: "/etc/mesos-slave/ip"
+    - src: "mesos-slave/hostname.j2"
+      dest: "/etc/mesos-slave/hostname"
+    - src: "mesos-slave/resources.j2"
+      dest: "/etc/mesos-slave/resources"
+    - src: "mesos-slave/executor_registration_timeout.j2"
+      dest: "/etc/mesos-slave/executor_registration_timeout"
+  notify:
+    - start mesos-slave
