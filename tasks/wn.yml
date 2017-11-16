@@ -18,7 +18,7 @@
         - name: "mesos-master"
 
     - name: Disable Zookeeer and Mesos master services
-      copy:
+      template:
         src: "{{ item.src }}"
         dest: "{{ item.dest }}"
         mode: "0664"        
