@@ -4,8 +4,8 @@
     src: "/etc/mesos/zk"
     dest: "/etc/mesos/zk"
 
-- name: Include DNS configuration
-  include: "dns.yml"
+#- name: Include DNS configuration
+#  include: "dns.yml"
 
 - name: Stop and disable Zookeeer and Mesos master (Debian)
   block:
