@@ -111,6 +111,3 @@
        {{vnode_prefix}}{{number}}
        {% endfor %}
     dest: "/etc/clues2/mesos_vnodes.info"
-
-#- name: Include DNS configuration
-#  include: "dns.yml"

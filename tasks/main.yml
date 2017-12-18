@@ -16,3 +16,4 @@
 
 - name: Include "{{mesos_type_of_node}}" mesos recipe
   include: "{{mesos_type_of_node}}.yml"
+  
