@@ -112,6 +112,26 @@
        {% endfor %}
     dest: "/etc/clues2/mesos_vnodes.info"
     
+# Marathon-LB installation (may be moved to marathon role)
+- name: Install pip if needed on Debian
+  apt:
+    pkg: python-pip
+    state: present
+    update_cache: yes
+  when: "ansible_os_family == 'Debian'"
+
+- name: Install pip if needed on Redhat
+  yum:
+    pkg: python-pip
+    state: present
+    update_cache: yes
+  when: "ansible_os_family == 'RedHat'"
+
+- name: Install docker container dependencies
+  pip:
+    executable: /usr/bin/pip
+    name: docker-py
+    
 - name: Run Marathon-LB container
   docker_container:
     name: marathon-lb
