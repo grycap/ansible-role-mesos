@@ -143,6 +143,6 @@
     network_mode: host
     published_ports:
      - 9090:9090
-     - "{% for port in range(10000, 10100) %}{{port}}:{{port}}{% if not loop.last %},{% endif %}{% endfor %}"
+     #- "{% for port in range(10000, 10100) %}{{port}}:{{port}}{% if not loop.last %},{% endif %}{% endfor %}"
     hostname: "{{ ansible_hostname }}"
     command: "sse --group external --group internal --health-check --marathon http://localhost:8080 --auth-credentials=ubuntu:ubuntu_secret"
