@@ -49,5 +49,9 @@
       dest: "/etc/mesos-slave/resources"
     - src: "mesos-slave/executor_registration_timeout.j2"
       dest: "/etc/mesos-slave/executor_registration_timeout"
+    - src: "mesos-slave/docker_remove_delay.j2"
+      dest: "/etc/mesos-slave/docker_remove_delay"
+    - src: "mesos-slave/enforce_container_disk_quota.j2"
+      dest: "/etc/mesos-slave/enforce_container_disk_quota"
   notify:
     - start mesos-slave
