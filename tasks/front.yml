@@ -138,7 +138,7 @@
     image: mesosphere/marathon-lb
     state: started
     privileged: yes
-    detach: True
+    detach: true
     restart_policy: always
     network_mode: host
     env: 
