@@ -1,8 +1,10 @@
 ---
 - name: Copy zk file from the frontend
-  copy: 
+  fetch: 
     src: "/etc/mesos/zk"
     dest: "/etc/mesos/zk"
+    flat: yes
+  delegate_to: '{{ansible_default_ipv4.address}}'
 
 - name: Stop and disable Zookeeer and Mesos master (Debian)
   block:
