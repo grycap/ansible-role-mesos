@@ -1,4 +1,10 @@
 ---
+- name: Modify permissions zk directory
+  file:
+    path: "/etc/mesos/zk"
+    state: directory
+    mode: 0757
+
 - name: Copy zk file from the frontend
   fetch: 
     src: "/etc/mesos/zk"
