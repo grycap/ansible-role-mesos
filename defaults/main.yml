@@ -8,6 +8,7 @@ max_number_of_nodes: 3
 quorum: 1
 principal: ubuntu
 secret: ubuntusecret
+mesos_front_public_ip: ""
 mesos_front_private_ip: ""
 mesos_docker_opts: ""
 mesos_version: ""
