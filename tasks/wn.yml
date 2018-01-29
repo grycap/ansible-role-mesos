@@ -1,15 +1,21 @@
 ---
-- name: Modify permissions zk directory
-  file:
-    path: "/etc/mesos/zk"
-    mode: 0757
+#- name: Modify permissions zk directory
+#  file:
+#    path: "/etc/mesos/zk"
+#    mode: 0757
 
-- name: Copy zk file from the frontend
-  fetch: 
-    src: "/etc/mesos/zk"
-    dest: "/etc/mesos/zk"
-    flat: yes
-  delegate_to: '{{IM_MASTER_HOSTNAME}}'
+#- name: Copy zk file from the frontend
+#  fetch: 
+#    src: "/etc/mesos/zk"
+#    dest: "/etc/mesos/zk"
+#    flat: yes
+#  delegate_to: '{{IM_MASTER_HOSTNAME}}'
+
+- name: Set ZooKeeper URL
+  copy:
+    content: "zk://{{IM_MASTER_HOSTNAME}}:2181/mesos"
+    dest: /etc/mesos/zk
+    mode: 0644
 
 - name: Stop and disable Zookeeer and Mesos master (Debian)
   block:
