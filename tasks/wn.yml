@@ -1,8 +1,9 @@
 ---
-- name: Copy zk file from the frontend
-  copy: 
-    src: "/etc/mesos/zk"
-    dest: "/etc/mesos/zk"
+- name: Set ZooKeeper URL
+  copy:
+    content: "zk://{{IM_MASTER_HOSTNAME}}:2181/mesos"
+    dest: /etc/mesos/zk
+    mode: 0644
 
 - name: Stop and disable Zookeeer and Mesos master (Debian)
   block:
