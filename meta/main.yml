@@ -20,4 +20,5 @@ dependencies:
   - { role: 'grycap.docker', docker_opts: "{{ mesos_docker_opts }}" }
   - { role: 'grycap.ssh', ssh_type_of_node: "{{ mesos_type_of_node }}", ssh_user: "{{ mesos_ssh_user }}" }
   - { role: 'grycap.zookeeper' }
+  - { role: 'grycap.cluster-users', cluster_users_type_of_node: "{{ mesos_type_of_node }}", users_dict: "{{ users }}"}  
   - { role: 'grycap.weave', weave_type_of_node: "{{ mesos_type_of_node }}", weave_frontend_ip: "{{ mesos_front_public_ip }}" }
