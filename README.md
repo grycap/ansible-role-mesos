@@ -21,6 +21,8 @@ The variables that can be passed to this role and a brief description about them
   	mesos_log_dir: "/var/log/mesos"
   	#Max number of nodes of the cluster
   	max_number_of_nodes: 3
+	#IP address of the mesos master
+	mesos_master: {{ ansible_default_ipv4.address }}
 
 
 Example Playbook
