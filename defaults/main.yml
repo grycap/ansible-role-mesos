@@ -12,4 +12,4 @@ mesos_front_private_ip: ""
 mesos_docker_opts: ""
 mesos_version: ""
 mesos_slave_resources: ""
-mesos_master: {{ ansible_default_ipv4.address }}
+mesos_master: "{{ ansible_default_ipv4.address }}"
