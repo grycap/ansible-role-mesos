@@ -12,18 +12,13 @@
 
 - name: Set ZooKeeper URL # used for leader election amongst masters
   copy:
-    content: "zk://{{ansible_default_ipv4.address}}:2181/mesos"
+    content: "zk://{{mesos_master}}:2181/mesos"
     dest: /etc/mesos/zk
     mode: 0644
 
 - block:
-#  - name: start up zookeeper in Centos 6
-#    command: /usr/lib/zookeeper/bin/zkServer.sh start
-#    when: ansible_distribution_major_version == "6"
 
   - block:
-#    - name: start up zookeeper in Centos 7
-#      service: name=zookeeper state=started enabled=yes
 
     # Disable mesos-slave in Redhat
     - name: Stop the Mesos Slave service
@@ -37,8 +32,6 @@
   when: ansible_os_family == "RedHat"
 
 - block:
-#  - name: start up zookeeper in Deb systems
-#    service: name=zookeeper state=started enabled=yes
 
   # Master tasks
   - name: Stop the Mesos Slave service
@@ -54,7 +47,7 @@
 
 - name: Set Mesos Master hostname
   copy:
-    content: "{{ansible_default_ipv4.address}}"
+    content: "{{mesos_master}}"
     dest: /etc/mesos-master/hostname
     mode: 0644
 
@@ -79,7 +72,7 @@
 # Tambien se puede configurar la ip del master con (export MESOS_IP=158.42.104.229)
 - name: Set Mesos Master ip (debian)
   copy:
-    content: "{{ansible_default_ipv4.address}}"
+    content: "{{mesos_master}}"
     dest: /etc/mesos-master/ip
     mode: 0644
 
