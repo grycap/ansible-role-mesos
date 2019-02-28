@@ -69,10 +69,9 @@
     dest: /usr/etc/mesos/credentials
     mode: 0600
 
-# Tambien se puede configurar la ip del master con (export MESOS_IP=158.42.104.229)
 - name: Set Mesos Master ip (debian)
   copy:
-    content: "{{mesos_master}}"
+    content: "0.0.0.0"
     dest: /etc/mesos-master/ip
     mode: 0644
 
