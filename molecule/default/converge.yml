@@ -10,6 +10,7 @@
         name: "ansible-role-mesos"
       vars:
         mesos_type_of_node: "front"
+        mesos_ssh_user: ""
 
 
     - name: "Test grycap.mesos wn"
@@ -18,3 +19,4 @@
       vars:
         mesos_type_of_node: "wn"
         mesos_front_private_ip: "127.0.0.1"
+        mesos_ssh_user: ""
