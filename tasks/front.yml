@@ -19,9 +19,6 @@
 - name: Stop and disable the Mesos Slave service
   service: name=mesos-slave state=stopped enabled=no 
 
-# - name: start up zookeeper in Centos 7
-#   service: name=zookeeper state=started enabled=yes
-
 - name: Set Mesos Master hostname
   copy:
     content: "{{mesos_front_private_ip}}"
