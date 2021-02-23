@@ -8,7 +8,8 @@ max_number_of_nodes: 3
 quorum: 1
 principal: ubuntu
 secret: ubuntusecret
-mesos_front_private_ip: ""
+mesos_front_private_ip: "{{ansible_default_ipv4.address}}"
 mesos_docker_opts: ""
 mesos_version: ""
 mesos_slave_resources: ""
+mesos_dns_enable: true

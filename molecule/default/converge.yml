@@ -1,0 +1,19 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  tasks:
+
+    - name: "Test grycap.mesos front"
+      include_role:
+        name: "ansible-role-mesos"
+      vars:
+        mesos_type_of_node: "front"
+
+
+    - name: "Test grycap.mesos wn"
+      include_role:
+        name: "ansible-role-mesos"
+      vars:
+        mesos_type_of_node: "wn"
+        mesos_front_private_ip: "127.0.0.1"

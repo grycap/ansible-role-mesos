@@ -3,10 +3,14 @@
   include: "{{ansible_os_family}}.yml"
 
 - name: Configure containerizers
-  shell: echo 'docker,mesos' | sudo tee /etc/mesos-slave/containerizers
+  copy:
+    content: "docker,mesos"
+    dest: /etc/mesos-slave/containerizers
 
 - name: Configure executor registration timeout
-  shell: echo '5mins' | sudo tee /etc/mesos-slave/executor_registration_timeout
+  copy:
+    content: "5mins"
+    dest: /etc/mesos-slave/executor_registration_timeout
 
 - name: create log directory
   file:
