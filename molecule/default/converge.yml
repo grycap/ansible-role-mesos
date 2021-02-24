@@ -9,6 +9,11 @@
       update_cache: yes
       cache_valid_time: 3600
     when: ansible_distribution == "Ubuntu"
+  
+  - copy:
+      content: "NETWORKING=yes"
+      dest: /etc/sysconfig/network
+    when: ansible_os_family == "RedHat"
 
   tasks:
 
