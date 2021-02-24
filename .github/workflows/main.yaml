@@ -33,18 +33,6 @@ jobs:
       - name: Install test dependencies.
         run: pip3 install ansible molecule[docker] docker
 
-      - name: Install geerlingguy.ntp
-        run: sudo ansible-galaxy install geerlingguy.ntp
-
-      - name: Install grycap.docker
-        run: sudo ansible-galaxy install grycap.docker
-
-      - name: Install grycap.ssh
-        run: sudo ansible-galaxy install grycap.ssh
-
-      - name: Install grycap.zookeeper
-        run: sudo ansible-galaxy install grycap.zookeeper
-
       - name: Run Molecule tests.
         run: molecule test
         env:
