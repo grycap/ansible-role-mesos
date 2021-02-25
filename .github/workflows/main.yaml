@@ -34,7 +34,7 @@ jobs:
         run: pip3 install ansible==2.10.7 molecule[docker] docker
 
       - name: Create /etc/mesos/zk
-        run: mkdir -p /etc/mesos ; touch /etc/mesos/zk
+        run: sudo mkdir -p /etc/mesos ; sudo touch /etc/mesos/zk
  
       - name: Run Molecule tests.
         run: molecule test
