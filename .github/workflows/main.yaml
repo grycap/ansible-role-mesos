@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         distro:
-          - "centos7"
+#          - "centos7"
           - "ubuntu1804"
           - "ubuntu2004"
 
@@ -33,6 +33,9 @@ jobs:
       - name: Install test dependencies.
         run: pip3 install ansible==2.10.7 molecule[docker] docker
 
+      - name: Create /etc/mesos/zk
+        run: mkdir -p /etc/mesos ; touch /etc/mesos/zk
+ 
       - name: Run Molecule tests.
         run: molecule test
         env:
