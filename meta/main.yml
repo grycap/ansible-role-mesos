@@ -18,4 +18,4 @@ galaxy_info:
 dependencies:
   - { role: 'geerlingguy.ntp', ntp_servers: [ntp.upv.es, ntp.uv.es] }
   - { role: 'grycap.docker', docker_opts: "{{ mesos_docker_opts }}" }
-  - { role: 'indigo-dc.zookeeper', zookeeper_host_list: ["{{mesos_front_private_ip}}"], when:  mesos_type_of_node == "front"}
+  - { role: 'grycap.zookeeper', server_list: ["{{mesos_front_private_ip}}"], when:  mesos_type_of_node == "front"}
