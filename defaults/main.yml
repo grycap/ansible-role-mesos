@@ -26,4 +26,4 @@ mesos_master_image: "indigodatacloud/mesos-master:{{ mesos_version }}"
 # Zookeeper
 zookeeper_client_port: "2181"
 zookeeper_server_group: zookeeper_servers
-zookeeper_peers_nodes: "{{mesos_front_private_ip}}":"zookeeper_client_port"
+zookeeper_peers_nodes: "{{mesos_front_private_ip}}":"{{zookeeper_client_port}}"
