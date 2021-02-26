@@ -18,5 +18,3 @@ galaxy_info:
 dependencies:
   - { role: 'geerlingguy.ntp', ntp_servers: [ntp.upv.es, ntp.uv.es] }
   - { role: 'grycap.docker', docker_opts: "{{ mesos_docker_opts }}" }
-  - { role: 'grycap.ssh', ssh_type_of_node: "{{ mesos_type_of_node }}", ssh_user: "{{ mesos_ssh_user }}", when: mesos_ssh_user != ""}
-  - { role: 'grycap.zookeeper', server_list: ["{{mesos_front_private_ip}}"], when:  mesos_type_of_node == "front"}

@@ -1,22 +1,11 @@
----
-- name: Include "{{ansible_os_family}}" mesos recipe
-  include: "{{ansible_os_family}}.yml"
-
-- name: Configure containerizers
-  copy:
-    content: "docker,mesos"
-    dest: /etc/mesos-slave/containerizers
-
-- name: Configure executor registration timeout
-  copy:
-    content: "5mins"
-    dest: /etc/mesos-slave/executor_registration_timeout
-
-- name: create log directory
+- name: create log directory  
   file:
     path: "{{ mesos_log_dir }}"
     state: directory
     mode: 0755
 
-- name: Include "{{mesos_type_of_node}}" mesos recipe
-  include: "{{mesos_type_of_node}}.yml"
+- include: master.yml
+  when: mesos_install_mode == "master"
+
+- include: slave.yml
+  when: mesos_install_mode == "slave"
