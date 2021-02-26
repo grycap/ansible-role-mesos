@@ -4,8 +4,8 @@
     state: directory
     mode: 0755
 
-- include: master.yml
-  when: mesos_install_mode == "master"
+- include_tasks: master.yml
+  when: mesos_type_of_node == "master"
 
-- include: slave.yml
-  when: mesos_install_mode == "slave"
+- include_tasks: slave.yml
+  when: mesos_type_of_node == "slave"

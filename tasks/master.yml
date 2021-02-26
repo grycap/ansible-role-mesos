@@ -1,3 +1,9 @@
+- name: Copy 'is_cluster_ready' file
+  copy:
+    dest: /bin/is_cluster_ready
+    src: is_cluster_ready
+    mode: 0755
+
 - name: create directory path to store the persistent information 
   file:
     path: "{{ mesos_master_work_dir }}"
@@ -5,12 +11,12 @@
     mode: 0755
 
 - name: run mesos-master container
-  docker:
+  docker_container:
     name: mesos-master
     image: "{{ mesos_master_image }}"
     detach: true
-    state: reloaded
-    net: "host"
+    state: started
+    network_mode: "host"
     volumes:
     - "{{ mesos_master_work_dir }}:{{ mesos_master_work_dir }}"
     - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"

@@ -21,14 +21,12 @@
       include_role:
         name: "ansible-role-mesos"
       vars:
-        mesos_type_of_node: "front"
-        mesos_ssh_user: ""
-
+        mesos_type_of_node: "master"
+        mesos_front_private_ip: "127.0.0.1"
 
     - name: "Test grycap.mesos wn"
       include_role:
         name: "ansible-role-mesos"
       vars:
-        mesos_type_of_node: "wn"
+        mesos_type_of_node: "slave"
         mesos_front_private_ip: "127.0.0.1"
-        mesos_ssh_user: ""

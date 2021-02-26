@@ -1,12 +1,12 @@
 ---
 # Type of node to install: front or wn
-mesos_type_of_node: "front"
+mesos_type_of_node: "master"
 mesos_log_dir: "/var/log/mesos"
 
 # Common
 mesos_executor_registration_timeout: 10mins
 mesos_cluster_name: "MesosCluster"
-mesos_quorum: 1
+mesos_quorum: "1"
 mesos_front_private_ip: "{{ansible_default_ipv4.address}}"
 mesos_docker_opts: ""
 mesos_version: "latest"
@@ -26,4 +26,4 @@ mesos_master_image: "indigodatacloud/mesos-master:{{ mesos_version }}"
 # Zookeeper
 zookeeper_client_port: "2181"
 zookeeper_server_group: zookeeper_servers
-zookeeper_peers_nodes: "{{mesos_front_private_ip}}":"{{zookeeper_client_port}}"
+zookeeper_peers_nodes: "{{mesos_front_private_ip}}:{{zookeeper_client_port}}"
