@@ -49,4 +49,7 @@ jobs:
         run: sudo ansible-playbook tests/test.yml -i tests/inventory -e mesos_type_of_node=slave
 
       - name: Test slaves
-        run: curl -L -X GET http://localhost:5050/master/slaves | grep cpus
+        run: curl -L -X GET http://localhost:5050/master/slaves
+
+      - name: logs
+        run: docker logs mesos-master
