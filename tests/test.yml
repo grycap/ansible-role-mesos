@@ -2,4 +2,3 @@
 - hosts: localhost
   roles:
     - role: ansible-role-mesos
-      mesos_front_private_ip: "127.0.0.1"
