@@ -1,5 +1,5 @@
 ---
-# Type of node to install: front or wn
+# Type of node to install: master/front or slave/wn
 mesos_type_of_node: "master"
 mesos_log_dir: "/var/log/mesos"
 

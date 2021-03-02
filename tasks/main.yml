@@ -5,7 +5,7 @@
     mode: 0755
 
 - include_tasks: master.yml
-  when: mesos_type_of_node == "master"
+  when: mesos_type_of_node == "master" or mesos_type_of_node == "front"
 
 - include_tasks: slave.yml
-  when: mesos_type_of_node == "slave"
+  when: mesos_type_of_node == "slave" or mesos_type_of_node == "wn"
