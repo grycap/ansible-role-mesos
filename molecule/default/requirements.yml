@@ -1,5 +1,0 @@
----
-roles:
-- name: geerlingguy.ntp
-- name: grycap.docker
-- name: grycap.zookeeper

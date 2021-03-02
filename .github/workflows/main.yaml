@@ -10,35 +10,40 @@ on:
   workflow_dispatch:
 
 jobs:
+  test:
 
-  molecule:
-    name: Molecule
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        distro:
-#          - "centos7"
-#          - "ubuntu1804"
-          - "ubuntu2004"
+    runs-on: ubuntu-20.04
 
     steps:
-      - name: Check out the codebase.
+      - name: checkout
         uses: actions/checkout@v2
 
-      - name: Set up Python 3.
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+      - name: Install python
+        run: sudo apt update && sudo apt install -y python3 python3-pip python3-setuptools
+    
+      - name: Remove pre-installed kubectl to avoid errors
+        run: sudo apt remove buildah podman kubectl containers-image containers-common -y
 
-      - name: Install test dependencies.
-        run: pip3 install ansible==2.10.7 molecule[docker] docker
+      - name: Install Ansible
+        run: sudo pip3 install ansible
 
-      - name: Create /etc/mesos/zk
-        run: sudo mkdir -p /etc/mesos ; sudo touch /etc/mesos/zk
- 
-      - name: Run Molecule tests.
-        run: molecule test
-        env:
-          PY_COLORS: '1'
-          ANSIBLE_FORCE_COLOR: '1'
-          MOLECULE_DISTRO: ${{ matrix.distro }}
+      - name: Create ansible.cfg with correct roles_path
+        run: sudo printf '[defaults]\nhost_key_checking = False\nroles_path=../' > ansible.cfg
+  
+      - name: Install geerlingguy.ntp
+        run: sudo ansible-galaxy install geerlingguy.ntp
+
+      - name: Install grycap.docker
+        run: sudo ansible-galaxy install grycap.docker
+
+      - name: Install grycap.zookeeper
+        run: sudo ansible-galaxy install grycap.zookeeper
+
+      - name: Basic role syntax check
+        run: sudo ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+
+      - name: Basic role check in front
+        run: sudo ansible-playbook tests/test.yml -i tests/inventory
+
+      - name: Basic role check in wn
+        run: sudo ansible-playbook tests/test.yml -i tests/inventory -e mesos_type_of_node=wn
