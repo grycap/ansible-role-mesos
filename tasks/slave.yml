@@ -28,4 +28,4 @@
       MESOS_docker_mesos_image: "{{ mesos_slave_image }}"
       MESOS_IP: "0.0.0.0"
       MESOS_WORK_DIR: "{{ mesos_slave_work_dir }}"
-      MESOS_HOSTNAME: "{{ mesos_front_private_ip }}"
+      MESOS_HOSTNAME: "{{ ansible_default_ipv4.address }}"
