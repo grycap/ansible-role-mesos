@@ -10,6 +10,12 @@
     state: directory
     mode: 0755
 
+- name: Set Mesos security keys
+  copy:
+    content: '{"credentials":[ {"principal": "{{principal}}", "secret": "{{secret}}" } ] }'
+    dest: "{{ mesos_master_work_dir }}/credentials"
+    mode: 0600
+
 - name: run mesos-master container
   docker_container:
     name: mesos-master
@@ -28,4 +34,5 @@
       MESOS_LOG_DIR: "{{ mesos_log_dir }}"
       MESOS_QUORUM: "{{ mesos_quorum }}"
       MESOS_WORK_DIR: "{{ mesos_master_work_dir }}"
+      MESOS_CREDENTIALS: "{{mesos_master_work_dir}}/credentials"
     restart_policy: always

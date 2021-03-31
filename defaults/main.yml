@@ -10,6 +10,8 @@ mesos_quorum: "1"
 mesos_front_private_ip: "{{ansible_default_ipv4.address}}"
 mesos_docker_opts: ""
 mesos_version: "latest"
+principal: ubuntu
+secret: ubuntusecret
 
 # Defaults file for mesos-salve
 mesos_slave_port: 5051
