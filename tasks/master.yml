@@ -1,0 +1,38 @@
+- name: Copy 'is_cluster_ready' file
+  copy:
+    dest: /bin/is_cluster_ready
+    src: is_cluster_ready
+    mode: 0755
+
+- name: create directory path to store the persistent information 
+  file:
+    path: "{{ mesos_master_work_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Set Mesos security keys
+  copy:
+    content: '{"credentials":[ {"principal": "{{mesos_principal}}", "secret": "{{mesos_secret}}" } ] }'
+    dest: "{{ mesos_master_work_dir }}/credentials"
+    mode: 0600
+
+- name: run mesos-master container
+  docker_container:
+    name: mesos-master
+    image: "{{ mesos_master_image }}"
+    detach: true
+    state: started
+    network_mode: "host"
+    volumes:
+    - "{{ mesos_master_work_dir }}:{{ mesos_master_work_dir }}"
+    - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"
+    env:
+      MESOS_HOSTNAME: "{{ mesos_front_private_ip }}"
+      MESOS_IP: "0.0.0.0"
+      MESOS_CLUSTER: "{{ mesos_cluster_name }}"
+      MESOS_ZK: "zk://{{ zookeeper_peers_nodes }}/mesos"
+      MESOS_LOG_DIR: "{{ mesos_log_dir }}"
+      MESOS_QUORUM: "{{ mesos_quorum }}"
+      MESOS_WORK_DIR: "{{ mesos_master_work_dir }}"
+      MESOS_CREDENTIALS: "{{mesos_master_work_dir}}/credentials"
+    restart_policy: always

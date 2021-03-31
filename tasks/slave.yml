@@ -1,0 +1,31 @@
+---
+# Tasks for Slave nodes
+- name: create working dir
+  file:
+    path: "{{ mesos_slave_work_dir }}"
+    state: directory
+    mode: 0755
+
+- name: run mesos-slave container
+  docker_container:
+    name: mesos-slave
+    image: "{{ mesos_slave_image }}"
+    state: started
+    privileged: true
+    pid_mode: host
+    restart_policy: always
+    volumes:
+    - "/sys/fs/cgroup:/sys/fs/cgroup"
+    - "/var/run/docker.sock:/var/run/docker.sock"
+    - "{{ mesos_slave_work_dir }}:{{ mesos_slave_work_dir }}"
+    - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"
+    network_mode: "host"
+    env:
+      MESOS_MASTER: "zk://{{ zookeeper_peers_nodes }}/mesos"
+      MESOS_EXECUTOR_REGISTRATION_TIMEOUT: "{{ mesos_executor_registration_timeout }}"
+      MESOS_CONTAINERIZERS: "{{ mesos_containerizers }}"
+      MESOS_LOG_DIR: "{{ mesos_log_dir }}"
+      MESOS_docker_mesos_image: "{{ mesos_slave_image }}"
+      MESOS_IP: "0.0.0.0"
+      MESOS_WORK_DIR: "{{ mesos_slave_work_dir }}"
+      MESOS_HOSTNAME: "{{ ansible_default_ipv4.address }}"

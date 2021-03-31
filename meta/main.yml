@@ -7,8 +7,8 @@ galaxy_info:
   platforms:
   - name: Ubuntu
     versions:
-    - trusty
-    - xenial
+    - bionic
+    - focal
   - name: EL
     versions:
     - 7
@@ -16,7 +16,6 @@ galaxy_info:
    - mesos
 
 dependencies:
-  - { role: 'grycap.ntp', ntp_config_server: [ntp.upv.es, ntp.uv.es] }
+  - { role: 'geerlingguy.ntp', ntp_servers: [ntp.upv.es, ntp.uv.es] }
   - { role: 'grycap.docker', docker_opts: "{{ mesos_docker_opts }}" }
-  - { role: 'grycap.ssh', ssh_type_of_node: "{{ mesos_type_of_node }}", ssh_user: "{{ mesos_ssh_user }}" }
-  - { role: 'grycap.zookeeper' }
+  - { role: 'grycap.zookeeper', server_list: ["{{mesos_front_private_ip}}"], when:  mesos_type_of_node == "master" or mesos_type_of_node == "front"}
