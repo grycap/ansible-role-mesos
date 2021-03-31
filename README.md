@@ -1,5 +1,5 @@
 [![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Build Status](https://travis-ci.org/grycap/ansible-role-mesos.svg?branch=master)](https://travis-ci.org/grycap/ansible-role-mesos)
+[![CI](https://github.com/grycap/ansible-role-mesos/actions/workflows/main.yaml/badge.svg)](https://github.com/grycap/ansible-role-mesos/actions/workflows/main.yaml)
 
 Mesos Role
 ==========
