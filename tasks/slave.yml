@@ -6,6 +6,12 @@
     state: directory
     mode: 0755
 
+- name: Set Mesos security keys
+  copy:
+    content: '{"principal": "{{mesos_principal}}", "secret": "{{mesos_secret}}" }'
+    dest: "{{ mesos_slave_work_dir }}/credentials"
+    mode: 0600
+
 - name: run mesos-slave container
   docker_container:
     name: mesos-slave
@@ -26,6 +32,7 @@
       MESOS_CONTAINERIZERS: "{{ mesos_containerizers }}"
       MESOS_LOG_DIR: "{{ mesos_log_dir }}"
       MESOS_docker_mesos_image: "{{ mesos_slave_image }}"
-      MESOS_IP: "0.0.0.0"
+      MESOS_IP: "{{ mesos_ip }}"
       MESOS_WORK_DIR: "{{ mesos_slave_work_dir }}"
       MESOS_HOSTNAME: "{{ ansible_default_ipv4.address }}"
+      MESOS_CREDENTIAL: "{{ mesos_slave_work_dir }}/credentials"
