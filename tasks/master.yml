@@ -28,7 +28,7 @@
     - "{{ mesos_log_dir }}:{{ mesos_log_dir }}"
     env:
       MESOS_HOSTNAME: "{{ mesos_front_private_ip }}"
-      MESOS_IP: "0.0.0.0"
+      MESOS_IP: "{{ mesos_ip }}"
       MESOS_CLUSTER: "{{ mesos_cluster_name }}"
       MESOS_ZK: "zk://{{ zookeeper_peers_nodes }}/mesos"
       MESOS_LOG_DIR: "{{ mesos_log_dir }}"

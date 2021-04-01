@@ -12,6 +12,7 @@ mesos_docker_opts: ""
 mesos_version: "latest"
 mesos_principal: ubuntu
 mesos_secret: ubuntusecret
+mesos_ip: "0.0.0.0"
 
 # Defaults file for mesos-salve
 mesos_slave_port: 5051
